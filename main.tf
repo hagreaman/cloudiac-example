@@ -31,6 +31,7 @@ resource "alicloud_security_group_rule" "allow_all_tcp" {
 }
 
 resource "alicloud_eip_address" "eip" {
+  
 }
 
 resource "alicloud_eip_association" "eip_asso" {
