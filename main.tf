@@ -31,13 +31,9 @@ resource "alicloud_security_group_rule" "allow_all_tcp" {
 }
 
 resource "alicloud_eip_address" "eip" {
-  
+
 }
 
-resource "alicloud_eip_association" "eip_asso" {
-  allocation_id = alicloud_eip_address.eip.id
-  instance_id   = alicloud_instance.web.id
-}
 
 resource "alicloud_ecs_key_pair" "default" {
   key_pair_name = var.key_name
@@ -45,7 +41,7 @@ resource "alicloud_ecs_key_pair" "default" {
 }
 
 resource "alicloud_instance" "web" {
-  #count                = var.instance_number
+  count                = var.instance_number
 
   availability_zone = var.zone
   security_groups = alicloud_security_group.default.*.id
@@ -58,6 +54,11 @@ resource "alicloud_instance" "web" {
   vswitch_id = alicloud_vswitch.default.id
 
   internet_max_bandwidth_out = 1
+}
+
+resource "alicloud_eip_association" "eip_asso" {
+  allocation_id = alicloud_eip_address.eip.id
+  instance_id   = alicloud_instance.web[count.index].id
 }
 
 // 为每个计算资源创建一个对应的 ansible_host 资源，
