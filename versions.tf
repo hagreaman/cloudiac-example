@@ -6,7 +6,7 @@ terraform {
     }
     alicloud = {
       source = "aliyun/alicloud"
-      version = "1.166.0"
+      version = "1.162.0"
    }
   }
 }
