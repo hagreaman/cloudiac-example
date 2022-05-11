@@ -40,7 +40,7 @@ resource "alicloud_ecs_key_pair" "default" {
 }
 
 resource "alicloud_instance" "web" {
-  count                = var.instance_number
+  #count                = var.instance_number
 
   availability_zone = var.zone
   security_groups = alicloud_security_group.default.*.id
