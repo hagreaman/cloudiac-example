@@ -42,7 +42,7 @@ resource "alicloud_ecs_key_pair" "default" {
 
 resource "alicloud_instance" "web" {
   //count                = var.instance_number
-
+  id                = "abc"
   availability_zone = var.zone
   security_groups = alicloud_security_group.default.*.id
   instance_type        = "ecs.t5-lc1m1.small"
