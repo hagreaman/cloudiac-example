@@ -45,7 +45,7 @@ resource "alicloud_instance" "web" {
 
   availability_zone = var.zone
   security_groups = alicloud_security_group.default.*.id
-  instance_type        = var.instance_type
+  instance_type        = "ecs.t5-lc1m1.small"
   system_disk_category = "cloud_efficiency"
   image_id             = "ubuntu_18_04_64_20G_alibase_20190624.vhd"
   instance_name        = var.instance_name
