@@ -35,8 +35,9 @@ resource "alicloud_eip_address" "eip" {
 }
 
 resource "alicloud_eip_association" "eip_asso" {
+  count                = var.instance_number
   allocation_id = alicloud_eip_address.eip.id
-  instance_id   = alicloud_instance.web.id
+  instance_id   = alicloud_instance.web[count.index].id
 }
 
 resource "alicloud_ecs_key_pair" "default" {
@@ -45,7 +46,7 @@ resource "alicloud_ecs_key_pair" "default" {
 }
 
 resource "alicloud_instance" "web" {
-  #count                = var.instance_number
+  count                = var.instance_number
 
   availability_zone = var.zone
   security_groups = alicloud_security_group.default.*.id
