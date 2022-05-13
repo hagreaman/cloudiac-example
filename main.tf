@@ -31,14 +31,13 @@ resource "alicloud_security_group_rule" "allow_all_tcp" {
 }
 
 resource "alicloud_eip_address" "eip" {
-  
-}
 
 resource "alicloud_eip_association" "eip_asso" {
   count                = var.instance_number
   allocation_id = alicloud_eip_address.eip.id
   instance_id   = alicloud_instance.web[count.index].id
 }
+
 
 resource "alicloud_ecs_key_pair" "default" {
   key_pair_name = var.key_name
@@ -47,10 +46,9 @@ resource "alicloud_ecs_key_pair" "default" {
 
 resource "alicloud_instance" "web" {
   count                = var.instance_number
-
   availability_zone = var.zone
   security_groups = alicloud_security_group.default.*.id
-  instance_type        = var.instance_type
+  instance_type        = "ecs.t5-lc1m1.small"
   system_disk_category = "cloud_efficiency"
   image_id             = "ubuntu_18_04_64_20G_alibase_20190624.vhd"
   instance_name        = var.instance_name
@@ -63,18 +61,18 @@ resource "alicloud_instance" "web" {
 
 // 为每个计算资源创建一个对应的 ansible_host 资源，
 // 执行 ansible playbook 前会基于 ansible_host 资源自动生成 inventory 文件。
-resource "ansible_host" "web" {
-  count = var.instance_number
+#resource "ansible_host" "web" {
+ # count = var.instance_number
 
-  // 配置机器的 hostname，一般配置为计算资源的 public_ip (或 private_ip)
-  inventory_hostname = alicloud_instance.web[count.index].public_ip
+  #// 配置机器的 hostname，一般配置为计算资源的 public_ip (或 private_ip)
+ # inventory_hostname = alicloud_instance.web[count.index].public_ip
 
   // 配置机器所属分组
-  groups = ["web"]
+  #groups = ["web"]
 
   // 传给 ansible 的 vars，可在 playbook 文件中引用
-  vars = {
-    wait_connection_timeout = 600
-  }
-}
+  #vars = {
+  #  wait_connection_timeout = 600
+  #}
+#}
 
